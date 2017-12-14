@@ -2,15 +2,38 @@
 <html>
 
 <head>
-    <h1>Mon titre</h1>
+    <h1>connexion</h1>
     <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    
 </head>
+
 <body>
-    <form action="traitement.php">
-        Pseudo : <input type="text" name="nom" /><br>      
-        Mail   :   <input type="email" name="mail" /><br>
-        <button type="submit">Envoyer</button>
+    <div>
+    <form action="ProjetPHP/traitement.php" method="post">
+        <table>
+            <tr>
+                <td>Pseudo :</td>
+                <td>
+                    <input type="text" name="nom"/> </td>
+            </tr>
+            <tr>
+                <td>Mail :</td>
+                <td>
+                    <input type="email" name="mail" />
+                </td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">Envoyer</button>
+                </td>
+            </tr>
+        </table>
     </form>
+</div>
+   
 </body>
 
 </html>
