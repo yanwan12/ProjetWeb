@@ -41,9 +41,7 @@
                         }
         ?>
     </div>
-    <h1>Bienvenue
-        <?php echo "$pseudo"; ?>
-    </h1>
+    <h1>Bienvenue <?php echo "$pseudo"; ?></h1>
     <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
 </head>
