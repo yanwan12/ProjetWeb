@@ -1,15 +1,2 @@
-<?php echo('<body>
-
-                        <table>
-                            <tr>
-                                <td>Pseudo :</td>
-                                <td>'.$pseudo.'</td>
-                                
-                            </tr>
-                            <tr>
-                                <td>Mail :</td>
-                                <td>'.$mail.'</td>
-                            </tr> 
-                        </table>
-                       </body>');
-?>
+<p><a href="./connex.php">connex</a></p>
+<p><a href="./inscription.php">inscription</a></p>
