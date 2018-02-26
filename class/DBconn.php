@@ -1,23 +1,28 @@
 <?php
 
 class DBconn {
-    
-    private $host="localhost";
-    private $db="base_projet";
-    private $user="ecom";
-    private $pass="ecom";
-    private $bdd;
 
-    protected function conn(){
-    $bdd = new PDO("mysql:host=".$this->host.";dbname=".$this->db,$this->user,$this->pass);
-    $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); 
-    return $bdd; 
+    private $pdo;
+
+    public function __construct($login, $password, $database_name, $host = 'localhost'){
+        $this->pdo = new PDO("mysql:dbname=$database_name;host=$host", $login, $password);
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
     }
-    protected function queryList($sql, $args){
-        $bdd=$this->conn();
-        $stmt = $bdd->prepare($sql);
-        $stmt->execute($args);
-        return $stmt;
+
+    public function queryList($query, $params = false){
+        if($params){
+            $req = $this->pdo->prepare($query);
+            $req->execute($params);
+        }else{
+            $req = $this->pdo->query($query);
+        }
+        return $req;
+
+    }
+
+    public function lastInsertId(){
+        return $this->pdo->lastInsertId();
     }
 
 }

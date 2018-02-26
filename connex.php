@@ -1,4 +1,8 @@
+<?php 
 
+require_once 'init.php';
+
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -10,9 +14,7 @@
 
     <title>Signin Template</title>
     <?php
-
-        require './class/Form.php';
-        $form = new form($_POST);
+       $form = new form($_POST);
     ?>
     <!-- Bootstrap core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
@@ -22,10 +24,26 @@
   </head>
   
   <body class="text-center">
-    <form class="form-signin" method="post" action="./login.php">
-      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <form class="form-signin" method="post" action="">
       <h1 class="h3 mb-3 font-weight-normal">Connectez-vous à votre compte</h1>
-     <?php
+
+<div class="container">
+
+<?php if(Session::getInstance()->hasFlashes()):?>
+
+<?php foreach(Session::getInstance()->getFlashes() as $type => $msg):?>
+
+<div class="alert alert-<?= $type ?>">
+
+<?= $msg ?>
+
+</div>
+
+<?php endforeach; endif; ?>
+
+</div>
+
+<?php
         echo $form->input(array(
                                   "type" => "email",
                                   "name" => "mail",

@@ -1,4 +1,25 @@
+<?php
+require_once 'init.php';
 
+if(!empty($_POST)){
+
+$errors = array();
+
+$db = App::getDatabase();
+
+$user = new User($_POST, $db);
+
+$user->isUniq('mail', $db, 'Un utilisateur est déjà enregistré a cette adresse !');
+
+if($user->isValid()){
+  $user->nouvuser($_POST['nom'],$_POST['pnom'],$_POST['mail'],$_POST['pass'], $db);  
+  Session::getInstance()->setFlash('success','Un email de confirmation vous a été envoyé afin de valider votre compte');
+  header ('Location: connex.php');
+} else {
+ $errors = $user->getErrors();
+}
+}
+?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -6,12 +27,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="https://getbootstrap.com/assets/brand/bootstrap-solid.svg">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <link rel="icon" href="">
 
     <title>Signup Template</title>
     <?php
-
-        require './class/Form.php';
         $form = new form();
     ?>
     <!-- Bootstrap core CSS -->
@@ -21,13 +43,28 @@
     <link href="./style/signin.css" rel="stylesheet">
   </head>
   
-  <body class="text-center">
-    <form class="form-signin" method="post" action="./iconfirm.php">
-      <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-      <h1 class="h3 mb-3 font-weight-normal">Inscrivez-Vous</h1>
+  <body class="text-center" style="padding-top: 100px">
+
+
+
+    <form class="form-signin" method="post" action="">
+      <h1 class="h3 mb-3 font-weight-normal" style="padding-bottom: 50px;">Inscrivez-Vous</h1>
       <script src="./scripts/scriptfunc.js"></script>
-      
-     <?php
+      <?php if(!empty($errors)):?>
+<div class="alert alert-danger alert-dissmissible" style = "position: relative; top: 5;">
+  <p>Le formulaire a mal été rempli :</p>
+
+<ul>
+<?php foreach($errors as $error):?>
+    
+    <li><?= $error; ?></li>
+
+<?php endforeach;?>
+
+</ul>
+</div>
+<?php endif;
+
         echo $form->input(array(
                                   "type" => "email",
                                   "name" => "mail",
@@ -51,11 +88,12 @@
                                   "name" => "pass",
                                   "placeholder" => "Mot de Passe",
                                   "id" => "pass",
+                                  "onkeyup" => "return chkpass()",
                                   "class" => array('form-control')));
         echo $form->input(array(
                                   "type" => "password",
                                   "name" => "cpass",
-                                  "placeholder" => "Confirmation Mot de Passe",
+                                  "placeholder" => "Confirmer Mot de Passe",
                                   "id" => "cpass",
                                   "onkeyup" => "return chkpass()",
                                   "class" => array('form-control')));

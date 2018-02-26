@@ -1,43 +1,65 @@
 <?php
 
-require_once 'DBconn.php';
 
-class user extends DBconn {
+require_once './init.php';
 
 
-     var $iduser;
-     var $mail;
-     var $nom;
-     var $pass;
+class user {
 
-     function __construct(){
-         $this->mail = '';
-         $this->nom = '';
-         $this->pass = '';
+
+    private $data;
+    private $errors = [];
+
+
+    public function __construct($data){
+        $this->data = $data;
     }
 
-    
+
+    private function getField($field){
+        if (!isset($this->data[$field])) {
+            return null;
+        }
+        return $this->data[$field];
+    }
+   
+
     public static function getUser($mail, $pass){
         $user = new User();
-        $statement = $user->queryList('select * from user where mail=? and mdp=?', array($mail, $pass));
-        if($statement && $result = $statement->fetch()){
-           Utilisateur::fetchFromStatement($user,$result);
-           return $user;
+        $statement = $user->queryList("SELECT * FROM user WHERE mail=? AND mdp=?", array($mail, $pass));
+        $statement->fetch();
+        if ($statement){
+        return true;
         }
         return false;
     }
 
-    private static function fetchFromStatement(User  $user, $statement){
-        $user->iduser = $statement['iduser'];
-        $user->nom = $statement['nom'];
-        $user->mail = $statement['mail'];
-        $user->pass = $statement['pass'];
+    
+    public function isUniq($field, $db, $errormsg){
+        $req = $db->queryList("SELECT id from user WHERE $field = ?", [$this->getField($field)])->fetch();
+        if ($req){
+            $this->errors[$field] = $errormsg;
+        }
     }
 
-    public static function nouvuser($nom,$pnom,$mail,$pass){
-        $user = new User();
-        $req =  $user->querylist('INSERT user(nom, prenom, mail, mdp) VALUES(:nom, :pnom, :mail, :pass)',
-        array(':nom' => $nom, ':pnom' => $pnom, ':mail' => $mail, ':pass' => $pass));
+    
+    public static function nouvuser($nom, $pnom, $mail, $pass, $db){
+        $passcrypt = password_hash($_POST['pass'], PASSWORD_BCRYPT);
+        $token = App::str_random(60);
+        $db->queryList("INSERT user SET nom = ?, prenom=?, mdp = ?, mail = ?, confirmation_token = ?",
+        array($nom, $pnom, $passcrypt, $mail, $token));
+        $user_id=$db->lastInsertId();
+        mail($mail, 'Confirmation de votre compte', "Pour valider la création de votre compte merci de cliquer sur ce lien\n\nhttp://localhost/projetweb/iconfirm.php?id=$user_id&token=$token");
+    }
+
+
+    public function isValid(){
+        
+       return (empty($this->errors));
+    }
+
+
+    public function getErrors(){
+        return $this->errors;
     }
 }
-?>
