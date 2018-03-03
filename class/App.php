@@ -1,4 +1,5 @@
 <?php
+
 class App{
 
     static $db = null;
@@ -9,6 +10,13 @@ class App{
         }
         return self::$db;
     }
+
+
+    static function getUser(){
+        return new User(Session::getInstance(), ['restriction_msg' => "Vous n'avez pas le droit d'acceder acette page"]);
+
+    }
+
 
     static function str_random($length){
         $alphabet = "0123456789azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN";

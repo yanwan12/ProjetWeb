@@ -1,5 +1,5 @@
 <?php
-require_once 'init.php';
+require 'init.php';
 
 if(!empty($_POST)){
 
@@ -7,16 +7,16 @@ $errors = array();
 
 $db = App::getDatabase();
 
-$user = new User($_POST, $db);
+$valid= new Validateur($_POST, $db);
 
-$user->isUniq('mail', $db, 'Un utilisateur est déjà enregistré a cette adresse !');
+$valid->isUniq('mail', $db, 'Un utilisateur est déjà enregistré a cette adresse !');
 
-if($user->isValid()){
-  $user->nouvuser($_POST['nom'],$_POST['pnom'],$_POST['mail'],$_POST['pass'], $db);  
+if($valid->isValid()){
+  App::getUser()->nouvuser($db, $_POST['nom'],$_POST['pnom'],$_POST['mail'],$_POST['pass']);  
   Session::getInstance()->setFlash('success','Un email de confirmation vous a été envoyé afin de valider votre compte');
   header ('Location: connex.php');
 } else {
- $errors = $user->getErrors();
+ $errors = $valid->getErrors();
 }
 }
 ?>
@@ -26,7 +26,6 @@ if($user->isValid()){
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content="https://getbootstrap.com/assets/brand/bootstrap-solid.svg">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
