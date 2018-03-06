@@ -15,17 +15,6 @@ class user {
         $this->session = $session;
     }
 
-
-    public static function connexion($mail, $pass){
-        $user = new User();
-        $statement = $user->queryList("SELECT * FROM user WHERE mail=? AND mdp=?", array($mail, $pass));
-        $statement->fetch();
-        if ($statement){
-        return true;
-        }
-        return false;
-    }
-
     
     public static function nouvuser($db, $nom, $pnom, $mail, $pass){
         $passcrypt = password_hash($pass, PASSWORD_BCRYPT);
@@ -36,7 +25,11 @@ class user {
         mail($mail, 'Confirmation de votre compte', "Pour valider la création de votre compte merci de cliquer sur ce lien\n\nhttp://localhost/projetweb/iconfirm.php?id=$user_id&token=$token");
     }
 
-
+/*
+    Dans iconfirm.php
+    Récupère l'id user et le token de confirmation dans l'url (GET)
+    Met la valeur du token a 'NULL' dans la DB et met la date dans la colonne DATE
+*/
     public function confirm($user_id, $token, $db){
 
         $user = $db->queryList("SELECT * FROM user WHERE id = $user_id")->fetch();
@@ -52,9 +45,11 @@ class user {
     }
 
 
+/* 
+    Empêche l'accès a moncompte.php si une session n'est pas déjà démarré
+*/
     public function restrict(){
-        echo '<pre>'.print_r($this->session).'</pre>';
-        if(!$this->session->read('auth')){
+           if(!$this->session->read('auth')){
            $this->session->setFlash('danger', $this->options['restriction_msg']);
             header('Location: connex.php');
             exit();
@@ -62,6 +57,9 @@ class user {
     }
 
 
+/* 
+    Verifie si un user est déjà connecté
+*/    
     public function isConnected(){
         if(!$this->session->read('auth')){
 
@@ -75,10 +73,12 @@ class user {
 
     public function connect($user){
         $this->session->write('auth', $user);
-
     }
 
 
+/* 
+    Connecte automatiquement si le cookie remember est détécté
+*/
      public function connectFromCookie($db){
         if(isset($_COOKIE['remember']) && !$this->isConnected()){
             $remember_token = $_COOKIE['remember'];
@@ -86,7 +86,7 @@ class user {
             $user_id = $parts[0];
             $user = $db->queryList('SELECT * FROM user WHERE id = ?', [$user_id])->fetch();
             if($user){
-                $expected = $user_id . '==' . $user->remember_token . sha1($user_id . 'ratonlaveurs');
+                $expected = $user_id . '==' . $user->remember_token . sha1($user_id . 'ecomyanis');
                 if($expected == $remember_token){
                     $this->connect($user);
                     setcookie('remember', $remember_token, time() + 60 * 60 * 24 * 7);
@@ -101,6 +101,9 @@ class user {
     }
 
 
+/* 
+    Connect un user si email et mdp sont ceux associés dans la DB
+*/
     public function login($db, $mail, $pass, $remember = false ){
         $user = $db->queryList('SELECT * FROM user WHERE mail = :mail AND confirmed_at IS NOT NULL', array('mail' => $mail))->fetch();
         if(password_verify($pass, $user->mdp)){
@@ -118,6 +121,9 @@ class user {
     }
 
 
+/* 
+    Créée le cookie remember avec un hash 
+*/
     public function remember($db, $user_id){
         $remember_token = App::str_random(250);
         $db->queryList('UPDATE user SET remember_token = ? WHERE id = ?',[$remember_token, $user_id]);

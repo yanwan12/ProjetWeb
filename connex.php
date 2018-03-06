@@ -6,17 +6,26 @@ $auth = App::getUser();
 
 $db = App::getDatabase();
 
+$session = Session::getInstance();
+
 $auth = $auth->connectFromCookie($db);
 
-if($auth == !null){
-  
-  header ('Location: moncompte.php');
+if(is_null($auth)){
+
+$auth = App::getUser();
+
 }
+
+if($auth->isConnected()){
+  header ('Location: moncompte.php');
+
+}
+
 if(!empty($_POST) && !empty($_POST['mail']) && !empty($_POST['pass'])){
 
   $user = $auth->login($db, $_POST['mail'], $_POST['pass'], isset($_POST['remember']));
 
-  $session = Session::getInstance();
+  
 
   if($user){
 
@@ -47,7 +56,7 @@ if(!empty($_POST) && !empty($_POST['mail']) && !empty($_POST['pass'])){
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="./style/signin.css" rel="stylesheet">
+    <link href="./css/signin.css" rel="stylesheet">
   </head>
   
   <body class="text-center">

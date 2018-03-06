@@ -23,8 +23,10 @@ $form = new Form();
 
     <!-- Custom styles for this template -->
     <link href="./style/signin.css" rel="stylesheet">
-<header><a href="deco.php">Se déconnecter</a></header>
     <div class="form-group">
+    
+<a href="deco.php">Se déconnecter</a>
+
 <?php
 echo $form->input(array(
   "type" => "password",

@@ -2,6 +2,10 @@
 
 class Session{
 
+/* 
+    Singleton: il ne peut y avoir qu'une seule instance de la session
+*/
+
     static $instance;
 
     static function getInstance(){
@@ -17,7 +21,7 @@ class Session{
 
     public function setFlash($key, $message){
         $_SESSION['flash'][$key] = $message;
-    }
+    } /* définis un message */
 
     public function hasFlashes(){
         return isset($_SESSION['flash']);

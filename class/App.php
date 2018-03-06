@@ -1,5 +1,7 @@
 <?php
-
+/*Factory
+chaque fonction retourne une instance de la classe associée
+*/
 class App{
 
     static $db = null;
