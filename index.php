@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
- <a href="#sect1" class="js-scrollTo"> <div class="pimg1">
+ <a href="#sect1" class="js-scrollTo"> 
+  <div class="pimg1" id="haut">
     <div class="ptext">
       <span class="border">
         EcomYan
@@ -71,13 +72,15 @@
     </p>
   </section>
 
+<a href="https://github.com/yanwan12/ProjetWeb">
   <div class="pimg1">
     <div class="ptext">
       <span class="border">
-        Traversy Media
+        Benhalima Media&copy;
       </span>
     </div>
   </div>
+</a>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script>

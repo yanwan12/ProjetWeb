@@ -98,11 +98,6 @@ if($valid->isValid()){
                                   "class" => array('form-control')));
      ?>
       <span id="confirmMessage" class="confirmMessage"></span>
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div> 
       <?php echo $form->submit(array('btn', 'btn-lg', 'btn-primary','btn-block'),'submit');?>
       <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
     </form>

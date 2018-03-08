@@ -1,17 +1,17 @@
 # ProjetWeb
-Arborecence:
 
-C:.
-+---Backup
-+---class
-+---css
-+---img
-+---scripts
-\---test
-    +---.idea
-    |   \---copyright
-    +---classes
-    \---styles
+Arborecence:
+>C:.
+>+---Backup
+>+---class
+>+---css
+>+---img
+>+---scripts
+>\---test
+>    +---.idea
+>    |   \---copyright
+>    +---classes
+>    \---styles
           
 ______________________________________________________________________
 
