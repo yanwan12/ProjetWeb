@@ -11,14 +11,16 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
- <a href="#sect1" class="js-scrollTo"> 
-  <div class="pimg1" id="haut">
-    <div class="ptext">
+ 
+<div class="pimg1" id="haut">
+  <div class="ptext">
+    <a href="#sect1" class="js-scrollTo"> 
       <span class="border">
         EcomYan
       </span>
-    </div>
-  </div></a>
+     </a>
+  </div>
+</div>
 
 <div class="section section-light page page-header" id="sect1"> 
     <h2>T-Shirts</h2>
